@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Công Việc (Bài 2)</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            display: grid;
+            grid-template-areas: "input" "list";
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .input-section {
+            grid-area: input;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            width: 300px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        .list-section {
+            grid-area: list;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        li:hover {
+            transform: translateY(-2px);
+        }
+        li span {
+            flex: 1;
+            font-size: 16px;
+        }
+        li input[type="text"] {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        li .buttons {
+            display: flex;
+            gap: 5px;
+        }
+        li button {
+            padding: 5px 10px;
+            font-size: 14px;
+            border-radius: 15px;
+        }
+        .edit-btn {
+            background: #ff9800;
+        }
+        .edit-btn:hover {
+            background: #e68900;
+        }
+        .delete-btn {
+            background: #f44336;
+        }
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+        .save-btn {
+            background: #2196f3;
+        }
+        .save-btn:hover {
+            background: #1976d2;
+        }
+        /* Responsive: Điều chỉnh cho mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                grid-template-rows: auto 1fr;
+            }
+            .input-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            input {
+                width: 80%;
+            }
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            li .buttons {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Danh Sách Công Việc (Bài 2)</h1>
+    <div class="input-section">
+        <input id="task" type="text" placeholder="Nhập công việc mới...">
+        <button id="addBtn">Add</button>
+    </div>
+    <div class="list-section">
+        <ul id="list"></ul>
+    </div>
+
+    <script>
+        let todos = JSON.parse(localStorage.getItem("todos")) || [];
+        const taskInput = document.getElementById("task");
+        const addBtn = document.getElementById("addBtn");
+        const list = document.getElementById("list");
+
+        // Hàm render: Rebuild DOM hiệu quả với innerHTML (đơn giản cho list nhỏ)
+        function render() {
+            list.innerHTML = "";
+            todos.forEach((t, i) => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <span>${t}</span>
+                    <div class="buttons">
+                        <button class="edit-btn" data-index="${i}">Sửa</button>
+                        <button class="delete-btn" data-index="${i}">Xóa</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+            // Thêm event listeners cho buttons (tách logic)
+            document.querySelectorAll(".edit-btn").forEach(btn => btn.addEventListener("click", edit));
+            document.querySelectorAll(".delete-btn").forEach(btn => btn.addEventListener("click", del));
+        }
+
+        // Hàm add: Push vào mảng, lưu localStorage, render
+        function add() {
+            const task = taskInput.value.trim();
+            if (!task) return alert("Vui lòng nhập công việc!");
+            todos.push(task);
+            localStorage.setItem("todos", JSON.stringify(todos));
+            taskInput.value = "";
+            render();
+        }
+
+        // Hàm del: Splice mảng, lưu localStorage, render
+        function del(e) {
+            const i = e.target.dataset.index;
+            todos.splice(i, 1);
+            localStorage.setItem("todos", JSON.stringify(todos));
+            render();
+        }
+
+        // Hàm edit: Toggle edit mode inline
+        function edit(e) {
+            const li = e.target.closest("li");
+            const span = li.querySelector("span");
+            const buttons = li.querySelector(".buttons");
+            const i = e.target.dataset.index;
+
+            if (e.target.textContent === "Sửa") {
+                // Chuyển sang edit mode
+                const input = document.createElement("input");
+                input.type = "text";
+                input.value = todos[i];
+                li.replaceChild(input, span);
+                e.target.textContent = "Lưu";
+                e.target.classList.remove("edit-btn");
+                e.target.classList.add("save-btn");
+            } else {
+                // Lưu thay đổi
+                const input = li.querySelector("input");
+                const newTask = input.value.trim();
+                if (!newTask) return alert("Công việc không được để trống!");
+                todos[i] = newTask;
+                localStorage.setItem("todos", JSON.stringify(todos));
+                render();
+            }
+        }
+
+        // Event listeners
+        addBtn.addEventListener("click", add);
+        taskInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") add();
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

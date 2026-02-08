@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Bài Tập Web</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        nav a {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+        /* Responsive: Stack nav vertically trên mobile */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            nav a {
+                width: 200px;
+                text-align: center;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Chào Mừng Đến Với Bài Tập Web</h1>
+    <nav>
+        <a href="baitap01.html">Carousel</a>
+        <a href="baitap02.html">Todo</a>
+        <a href="baitap03.html">Game</a>
+        <a href="https://docs.google.com/document/d/1FIgt3kNrcPAHPhUhkkn2oWBDgK2sNc4A/edit?usp=sharing&ouid=109096257307826264929&rtpof=true&sd=true">Kết quả Bài 20</a>  <!-- Link đến màn hình kết quả của Bài 1 (Carousel demo) -->
+        <a href="https://nguyenhuy05091998-maker.github.io/bai21/">Giải Bài 21</a>  <!-- Link đến trang giải toàn bộ của Bài 2 (Todo với logic tư duy) -->
+    </nav>
+</body>
+</html>

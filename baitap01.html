@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Hình Ảnh (Bài 1)</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        .carousel {
+            overflow: hidden;
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .slide {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 600%; /* 6 hình, mỗi hình chiếm 100%/6 = ~16.67% */
+        }
+        .slide img {
+            width: 16.666%; /* 100% / 6 */
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            padding: 12px 25px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+        /* Responsive: Điều chỉnh cho mobile */
+        @media (max-width: 768px) {
+            .carousel {
+                width: 95%;
+            }
+            .slide img {
+                max-height: 250px;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Carousel Hình Ảnh (Bài 1)</h1>
+    <div class="carousel">
+        <div class="slide" id="slide">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyVAMTWnXL31BSIF4-Elwr08nLG_V4uIjQJg&s" alt="Hình 1">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZuliB-0aV9BaIExb5peHndGy0u9aNqke6Kg&s" alt="Hình 2">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX3NW_BEf0icGP56Hw1fwQQQwWYctD7B0Pdw&s" alt="Hình 3">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQSmB_V1pG6deo75Jce4-vaHleGBfOHWRlhA&s" alt="Hình 4">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAy-9mOS7I_HL0QHAgCrotzMT1KS5-b2hCcg&s" alt="Hình 5">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8tg6Mr-feIaEzmH-rP9XiJCTdho6P5al-tQ&s" alt="Hình 6">
+        </div>
+    </div>
+    <div class="controls">
+        <button id="prevBtn">Prev</button>
+        <button id="nextBtn">Next</button>
+    </div>
+
+    <script>
+        let index = 0;
+        const slide = document.getElementById("slide");
+        const total = slide.children.length; // 6 hình
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const carousel = document.querySelector(".carousel");
+
+        // Hàm hiển thị slide: Chỉ thay đổi transform để tối ưu performance
+        function showSlide() {
+            slide.style.transform = `translateX(-${index * (100 / total)}%)`; // Dịch chuyển theo % (100% / total cho mỗi hình)
+        }
+
+        // Hàm next: Xử lý index với modulo để tránh ngoài giới hạn
+        function next() {
+            index = (index + 1) % total;
+            showSlide();
+        }
+
+        // Hàm prev: Xử lý index với modulo để tránh ngoài giới hạn
+        function prev() {
+            index = (index - 1 + total) % total;
+            showSlide();
+        }
+
+        // Auto-slide mỗi 3 giây
+        let autoSlide = setInterval(next, 3000);
+
+        // Event listeners cho button (tách biệt logic)
+        nextBtn.addEventListener("click", next);
+        prevBtn.addEventListener("click", prev);
+
+        // Pause auto-slide khi hover để tối ưu UX và performance
+        carousel.addEventListener("mouseenter", () => clearInterval(autoSlide));
+        carousel.addEventListener("mouseleave", () => autoSlide = setInterval(next, 3000));
+    </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Đoán Số (Bài 3)</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .game-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            width: 200px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #msg {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        /* Pháo hoa animation: Particles bay lên và fade out */
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            display: none;
+        }
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #ff6b6b, #ff5252);
+            border-radius: 50%;
+            animation: explode 2s ease-out forwards;
+        }
+        @keyframes explode {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+        /* Responsive: Điều chỉnh cho mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .game-container {
+                padding: 20px;
+            }
+            input {
+                width: 150px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Đoán Số (1-100)</h1>
+    <div class="game-container">
+        <p>Nhập số từ 1 đến 100:</p>
+        <div class="controls">
+            <input id="num" type="number" min="1" max="100" placeholder="1-100">
+            <button id="checkBtn">Đoán</button>
+        </div>
+        <p id="msg"></p>
+        <button id="resetBtn" style="display: none;">Chơi Lại</button>
+    </div>
+    <div class="fireworks" id="fireworks"></div>
+
+    <script>
+        let secret = Math.floor(Math.random() * 100) + 1; // Tạo ngẫu nhiên từ 1-100
+        let count = 0;
+        const numInput = document.getElementById("num");
+        const checkBtn = document.getElementById("checkBtn");
+        const resetBtn = document.getElementById("resetBtn");
+        const msg = document.getElementById("msg");
+        const fireworks = document.getElementById("fireworks");
+
+        // Hàm check: Xử lý nhập, so sánh, đếm
+        function check() {
+            const n = Number(numInput.value);
+            if (isNaN(n) || n < 1 || n > 100) {
+                msg.innerText = "Vui lòng nhập số từ 1 đến 100!";
+                return;
+            }
+            count++;
+            numInput.value = ""; // Reset input
+
+            if (n > secret) {
+                msg.innerText = "Quá cao! Thử lại.";
+            } else if (n < secret) {
+                msg.innerText = "Quá thấp! Thử lại.";
+            } else {
+                msg.innerText = `Đúng! Bạn đoán đúng sau ${count} lần thử 🎉`;
+                showFireworks(); // Hiển thị pháo hoa
+                checkBtn.disabled = true;
+                numInput.disabled = true;
+                resetBtn.style.display = "inline-block";
+            }
+        }
+
+        // Hàm hiển thị pháo hoa: Tạo particles và animate
+        function showFireworks() {
+            fireworks.style.display = "block";
+            for (let i = 0; i < 50; i++) { // 50 particles
+                const particle = document.createElement("div");
+                particle.classList.add("particle");
+                particle.style.left = Math.random() * 100 + "%"; // Vị trí ngẫu nhiên
+                particle.style.animationDelay = Math.random() * 2 + "s"; // Delay ngẫu nhiên
+                fireworks.appendChild(particle);
+            }
+            // Ẩn sau 3s
+            setTimeout(() => {
+                fireworks.style.display = "none";
+                fireworks.innerHTML = ""; // Clear particles
+            }, 3000);
+        }
+
+        // Hàm reset: Tạo secret mới, reset state
+        function reset() {
+            secret = Math.floor(Math.random() * 100) + 1;
+            count = 0;
+            msg.innerText = "";
+            checkBtn.disabled = false;
+            numInput.disabled = false;
+            resetBtn.style.display = "none";
+            numInput.value = "";
+        }
+
+        // Event listeners
+        checkBtn.addEventListener("click", check);
+        resetBtn.addEventListener("click", reset);
+        numInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") check();
+        });
+    </script>
+</body>
+</html>
