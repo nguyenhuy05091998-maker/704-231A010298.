@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>K8 - BMI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Tính BMI</h2>
+
+<input id="w" placeholder="Cân nặng (kg)">
+<input id="h" placeholder="Chiều cao (m)">
+<button onclick="calcBMI()">Tính</button>
+
+<p id="result"></p>
+
+<script>
+function calcBMI() {
+  const w = w.value;
+  const h = h.value;
+  const bmi = (w / (h*h)).toFixed(2);
+  let type = bmi < 18.5 ? "Thiếu cân" :
+             bmi < 25 ? "Bình thường" : "Thừa cân";
+  result.innerText = `BMI = ${bmi} → ${type}`;
+}
+</script>
+
+</body>
+</html>

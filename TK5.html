@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TK5 - Accordion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Accordion</h2>
+
+<button class="accordion">Tiêu đề Accordion</button>
+<div class="panel">
+  <p>Nội dung accordion được ẩn/hiện.</p>
+</div>
+
+<script>
+const acc = document.querySelector(".accordion");
+const panel = document.querySelector(".panel");
+
+acc.onclick = () => {
+  panel.classList.toggle("active");
+  panel.style.maxHeight = panel.classList.contains("active")
+    ? panel.scrollHeight + "px"
+    : null;
+};
+</script>
+
+</body>
+</html>

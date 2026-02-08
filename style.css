@@ -1,0 +1,13 @@
+body { font-family: Arial; padding: 20px; }
+.menu li { margin: 10px 0; }
+
+.tab-content { display: none; padding: 10px; border: 1px solid #ccc; }
+
+.accordion { padding: 10px; }
+.panel { overflow: hidden; max-height: 0; transition: 0.3s; }
+
+.parallax {
+  height: 300px;
+  background: url("https://picsum.photos/800/600") center/cover fixed;
+}
+.content { height: 800px; padding: 20px; }

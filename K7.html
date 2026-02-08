@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>K7 - Parallax</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="parallax"></div>
+<div class="content">Nội dung cuộn trang</div>
+
+<script>
+window.addEventListener("scroll", () => {
+  document.querySelector(".parallax").style.backgroundPositionY =
+    window.scrollY * 0.5 + "px";
+});
+</script>
+
+</body>
+</html>

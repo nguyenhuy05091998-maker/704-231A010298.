@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>K3 - Kiểm tra mật khẩu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Đăng ký</h2>
+
+<form onsubmit="return checkPassword()">
+  <input type="password" id="pass" placeholder="Mật khẩu"><br>
+  <input type="password" id="confirm" placeholder="Nhập lại mật khẩu"><br>
+  <button type="submit">Đăng ký</button>
+</form>
+
+<p id="msg"></p>
+
+<script>
+function checkPassword() {
+  const p1 = pass.value;
+  const p2 = confirm.value;
+  if (p1 !== p2) {
+    msg.innerText = "❌ Mật khẩu không khớp";
+    return false;
+  }
+  msg.innerText = "✅ Mật khẩu hợp lệ";
+  return true;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>TK4 - Tab View</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Tab View</h2>
+
+<div class="tabs">
+  <button onclick="openTab(1)">Tab 1</button>
+  <button onclick="openTab(2)">Tab 2</button>
+  <button onclick="openTab(3)">Tab 3</button>
+</div>
+
+<div id="tab1" class="tab-content">Nội dung Tab 1</div>
+<div id="tab2" class="tab-content">Nội dung Tab 2</div>
+<div id="tab3" class="tab-content">Nội dung Tab 3</div>
+
+<script>
+function openTab(n) {
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.style.display = 'none';
+  });
+  document.getElementById('tab' + n).style.display = 'block';
+}
+openTab(1);
+</script>
+
+</body>
+</html>
